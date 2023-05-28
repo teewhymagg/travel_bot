@@ -1,0 +1,358 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.App {
+  width: 100%;
+  height: 100%;
+  font-family: sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: green;
+  color: white;
+  width: 100%;
+  height: 9vh;
+  padding: 0 10px;
+}
+
+.burger-menu {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.header-title {
+  text-align: center;
+  flex: 1;
+  justify-content: center;
+}
+
+.icon-plus-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon-plus-container:hover {
+  cursor: pointer;
+}
+
+.chatbox-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 9vh);
+  width: 100%;
+  padding: 10px;
+  background-color: lightgray;
+}
+
+
+
+.burger-menu {
+  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.burger-menu:hover {
+  cursor: pointer;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  transition: transform 0.5s ease-out;
+  transform: translateX(-100%);
+}
+
+.popup-content {
+  padding: 20px;
+  color: white;
+  margin-top: 30px;
+  text-align: center;
+  border-bottom: 1px solid white;
+}
+
+.App.active .popup {
+  transform: translateX(0);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+.input-place-main {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 10px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.input-place {
+  background-color: gray;
+  width: 100%;
+  min-height: 40px;
+  max-height: 120px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  outline: none;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  padding-right: 40px;
+  overflow-y: auto;
+}
+
+.icon-send-container {
+  position: absolute;
+  bottom: 7px;
+  right: 30px;
+  transform: translateY(-50%);
+}
+
+.icon-send-container:hover {
+  cursor: pointer;
+}
+
+.sidemenu {
+  display: none;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.sidemenu-header-button {
+  padding: 15px;
+  border-bottom: 1px solid white;
+  
+  text-align: center;
+}
+
+.sidemenu-header-button span {
+  padding-left: 1px;
+  padding-right: 6px;
+}
+
+.chatbox {
+  width: 100%;
+  height: 100%;
+  background-color: yellowgreen;
+  position: relative;
+}
+
+.input-place-container {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); /* Added to horizontally center the container */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.plus-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 400px;
+  height: 200px;
+  border-radius: 8px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  color: white;
+}
+
+.plus-popup-content {
+  text-align: center;
+}
+
+.plus-popup-input {
+  width: 200px;
+  height: 30px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.plus-popup-button {
+  padding: 5px 20px; /* Adjust the padding as desired */
+  height: 30px; /* Set the height to match the plus-popup-input */
+  background-color: #fff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.plus-popup-close-button {
+  position: absolute; /* Positioned relative to the plus-popup-content */
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+
+@media (min-width: 820px) {
+  .App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .burger-menu {
+    display: none;
+  }
+  
+  .header-title {
+    margin: 0;
+    text-align: center;
+  }
+  
+  .icon-plus-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .chatbox-main {
+    width: 800px;
+    height: 600px;
+    display: grid;
+    grid-template-columns: 240px 1fr; /* Adjusted to include the sidemenu */
+    margin-top: 20px;
+  }
+  
+  .sidemenu {
+    display: block;
+    width: 100%; /* Adjusted to fill the column */
+    text-align: center;
+    height: 100%; /* Adjusted to fill the height */
+    background-color: gray;
+  }
+  
+  
+  
+  .chatbox {
+    width: 100%; /* Adjusted to fill the column */
+    height: 100%; /* Adjusted to fill the height */
+    background-color: yellowgreen;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  .input-place-main {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 10px;
+    margin-top: 10px;
+    position: relative;
+  }
+  
+  .input-place {
+    background-color: gray;
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    outline: none;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
+    padding: 12px;
+    padding-right: 25px;
+  }
+  
+  .icon-plus-container {
+    display: none;
+  }
+
+  .icon-send-container {
+    position: absolute;
+    bottom: 7px;
+    right: 22px;
+    transform: translateY(-50%);
+  }
+
+    /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
