@@ -1,22 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
-import IconPlus from './Plus';
-import IconSend from './Send';
-import IconSearch from './Search';
-import { checkWeather } from './jquery'
+import IconPlus from './Plus'; // React component plus icon
+import IconSend from './Send'; // React component send icon
+import IconSearch from './Search'; // React component search icon
+import { checkWeather } from './jquery' // Importing function for implementing weather API
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Using React hook for implementing menu popup state
   const textareaRef = useRef(null);
 
+  // Variable for opening menu
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Variable to handle the close of menu
   const handleCloseClick = () => {
     setIsMenuOpen(false);
   };
 
+  // Implementing scrollbar
   const handleTextareaChange = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -24,8 +27,7 @@ const App = () => {
     }
   };
 
- 
-
+  // Defining cityName variable to store user's input
   const [cityName, setCityName] = useState('');
 
   const handleSearchClick = async () => {
@@ -36,13 +38,13 @@ const App = () => {
     }
   };
 
-
   // Adding the place, when plus is clicked
   const [isPlusOpen, setIsPlusOpen] = useState(false);
   const handlePlusClick = () => {
     setIsPlusOpen(!isPlusOpen);
   };
 
+  // Variable to close popup menu 
   const handleClosePlusClick = () => {
     setIsPlusOpen(false);
   };
