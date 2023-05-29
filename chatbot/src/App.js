@@ -29,14 +29,30 @@ const App = () => {
 
   // Defining cityName variable to store user's input
   const [cityName, setCityName] = useState('');
+  
+  //
+  const [favoritePlaces, setFavoritePlaces] = useState([]);
+
+
 
   const handleSearchClick = async () => {
     try {
-      await checkWeather(cityName); // Call the checkWeather function with the entered city name
+      const temperature = await checkWeather(cityName); // Call the checkWeather function with the entered city name and get the temperature
+  
+      const newFavoritePlace = {
+        city: cityName,
+        temperature: temperature,
+      };
+  
+      setFavoritePlaces([...favoritePlaces, newFavoritePlace]); // Add the newFavoritePlace to the favoritePlaces array
+  
+      setCityName(''); // Clear the cityName input field after adding the favorite place
+      setIsPlusOpen(false); // Close the plus popup window
     } catch (error) {
       console.log(error); // Handle any errors that occur during the API request
     }
   };
+  
 
   // Adding the place, when plus is clicked
   const [isPlusOpen, setIsPlusOpen] = useState(false);
@@ -90,7 +106,15 @@ const App = () => {
         <div className="popup">
           <div className="popup-content">
             <h2>Favourite places</h2>
-            <p>This is the content of the popup window.</p>
+            <div className="favorite-places">
+              {favoritePlaces.map((place, index) => (
+                <div key={index} className="favorite-place">
+                  <span className="city-name">{place.city}</span>
+                  <span className="temperature">{place.temperature}&deg;C</span>
+                </div>
+              ))}
+            </div>
+
             <button className="close-button" onClick={handleCloseClick}>
               X
             </button>

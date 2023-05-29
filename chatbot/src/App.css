@@ -84,7 +84,11 @@
   color: white;
   margin-top: 30px;
   text-align: center;
+}
+
+.popup-content h2 {
   border-bottom: 1px solid white;
+  padding: 20px;
 }
 
 .App.active .popup {
@@ -242,6 +246,24 @@
   font-size: 20px;
   color: white;
   cursor: pointer;
+}
+
+.favorite-places {
+  margin-top: 20px;
+}
+
+.favorite-place {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.city-name {
+  font-weight: bold;
+}
+
+.temperature {
+  color: gray;
 }
 
 
