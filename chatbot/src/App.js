@@ -4,6 +4,7 @@ import IconPlus from './Plus'; // React component plus icon
 import IconSend from './Send'; // React component send icon
 import IconSearch from './Search'; // React component search icon
 import { checkWeather } from './jquery' // Importing function for implementing weather API
+import ChatMessage from './ChatMessage';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Using React hook for implementing menu popup state
@@ -13,7 +14,7 @@ const App = () => {
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+  
   // Variable to handle the close of menu
   const handleCloseClick = () => {
     setIsMenuOpen(false);
@@ -65,6 +66,20 @@ const App = () => {
     setIsPlusOpen(false);
   };
 
+  const [input, setInput] = useState('');
+  const [chatLog, setChatLog] = useState([{
+    user: "bot",
+    message: "How can I help?"
+  }, {
+    user: "me",
+    message: "I want to use bot"
+  }]);
+ 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setChatLog([...chatLog, { user: "me", message: `${input}`}])
+    setInput('')
+  }
   
   return (
     <div className={`App ${isMenuOpen ? 'active' : ''}`}>
@@ -96,6 +111,11 @@ const App = () => {
           </div>
         </aside>
         <div className="chatbox">
+          <div className="chat-log">
+            {chatLog.map((message, index) => (
+              <ChatMessage key={index} message = {message} />
+            ))}
+          </div>
           <div className="input-place-container">
             <div className="input-place-main">
               <textarea
@@ -107,7 +127,9 @@ const App = () => {
                 style={{resize:"none"}}>
                 </textarea>
               <div className='icon-send-container'>
-                <IconSend width={30} height={30} />
+                <form onSubmit={handleSubmit} value={input} onChange={(e) => setInput(e.target.value)}>
+                  <IconSend width={30} height={30}/>
+                </form>
               </div>
             </div>
           </div>
