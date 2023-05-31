@@ -173,6 +173,10 @@
   text-align: center;
 }
 
+.sidemenu-header-button:hover {
+  cursor: pointer;
+}
+
 .sidemenu-header-button span {
   padding-left: 1px;
   padding-right: 6px;
@@ -314,8 +318,6 @@
     background-color: gray;
   }
   
-  
-  
   .chatbox {
     width: 100%; /* Adjusted to fill the column */
     height: 100%; /* Adjusted to fill the height */
@@ -376,5 +378,30 @@
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
+  }
+
+  .sidemenu-content h2{
+    margin-top: 10px;
+  }
+
+  .favorite-places1 {
+    margin-top: 20px;
+  }
+  
+  .favorite-place1 {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .city-name1 {
+    font-weight: bold;
+  }
+  
+  .temperature1 {
+    color: black;
   }
 }

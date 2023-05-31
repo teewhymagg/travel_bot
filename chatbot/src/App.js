@@ -79,9 +79,20 @@ const App = () => {
       </header>
       <div className="chatbox-main">
         <aside className='sidemenu'>
-          <div className='sidemenu-header-button'>
+          <div className='sidemenu-header-button' onClick={handlePlusClick}>
             <span>+</span>
             New place
+          </div>
+          <div className="sidemenu-content">
+            <h2>Favourite places</h2>
+            <div className="favourite-place1">
+              {favoritePlaces.map((place, index) => (
+                <div key={index} className="favorite-place1">
+                  <span className="city-name1">{place.city}</span>
+                  <span className="temperature1">{place.temperature}&deg;C</span>
+                </div>
+              ))}
+            </div>
           </div>
         </aside>
         <div className="chatbox">
