@@ -45,6 +45,13 @@
 }
 
 .chatbox-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 9vh);
+  width: 100%;
+  padding: 10px;
+  background-color: lightgray;
   border-style: solid;
   border-width: 1px;
 }
