@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
-import IconPlus from './Plus'; // React component plus icon
-import IconSend from './Send'; // React component send icon
-import IconSearch from './Search'; // React component search icon
+import IconPlus from './components/Plus'; // React component plus icon
+import IconSend from './components/Send'; // React component send icon
+import IconSearch from './components/Search'; // React component search icon
 import { checkWeather } from './jquery' // Importing function for implementing weather API
-import ChatMessage from './ChatMessage';
+import ChatMessage from './components/ChatMessage';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Using React hook for implementing menu popup state
