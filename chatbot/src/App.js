@@ -82,6 +82,7 @@ const App = () => {
   }
   
   return (
+  
     <div className={`App ${isMenuOpen ? 'active' : ''}`}>
       <header className="header">
         <div className="burger-menu" onClick={handleMenuClick}>
