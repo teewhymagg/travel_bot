@@ -2,6 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
 
 .App {
@@ -14,8 +18,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: green;
-  color: white;
+  color: #8D8741;
   width: 100%;
   height: 9vh;
   padding: 0 10px;
@@ -188,7 +191,7 @@
 .chatbox {
   width: 100%;
   height: 100%;
-  background-color: yellowgreen;
+  background-color: #FBEEC1;
   position: relative;
 }
 
@@ -357,13 +360,13 @@
     width: 100%; /* Adjusted to fill the column */
     text-align: center;
     height: 100%; /* Adjusted to fill the height */
-    background-color: gray;
+    background-color: #DAAD86;
   }
   
   .chatbox {
     width: 100%;
     height: 100%;
-    background-color: yellowgreen;
+    background-color: #FBEEC1;
     position: relative;
   }
   
@@ -450,7 +453,8 @@
   }
   
   .chat-message {
-    background-color: blue;
+    background-color: #659DBD;
+    color: black;
   }
   
   .avatar {

@@ -5,6 +5,8 @@ import IconSend from './components/Send'; // React component send icon
 import IconSearch from './components/Search'; // React component search icon
 import { checkWeather } from './jquery' // Importing function for implementing weather API
 import ChatMessage from './components/ChatMessage';
+import backgroundImage from './image/image5.jpg';
+
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Using React hook for implementing menu popup state
@@ -83,12 +85,13 @@ const App = () => {
   
   return (
   
-    <div className={`App ${isMenuOpen ? 'active' : ''}`}>
+    <div className={`App ${isMenuOpen ? 'active' : ''}`}
+      style={{ backgroundImage: `url(${backgroundImage})` }}>
       <header className="header">
         <div className="burger-menu" onClick={handleMenuClick}>
           &#9776;
         </div>
-        <h1 className="header-title">Travel the World</h1>
+        <h1 className="header-title">Visit Bayern</h1>
         <div className="icon-plus-container" onClick={handlePlusClick}>
           <IconPlus width={25} height={20} />
         </div>
@@ -114,7 +117,7 @@ const App = () => {
         <div className="chatbox">
           <div className="chat-log">
             {chatLog.map((message, index) => (
-              <ChatMessage key={index} message = {message} />
+              <ChatMessage key={index} message = {message}/>
             ))}
           </div>
           <div className="input-place-container">
