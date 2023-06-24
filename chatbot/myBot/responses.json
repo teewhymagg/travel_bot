@@ -1,0 +1,68 @@
+{
+  "hiking": {
+    "responses": [ "That's great! In Bavaria, you can hike in forests or in mountains. Which do you prefer?" ],
+    "mountains": {
+      "responses": [ "That's a wonderful choice! In Bavaria, we have a few options: Zugspitze, Watzmann, and Tegelberg. Which do you prefer?" ],
+      "zugspitze": {
+        "responses": [ "You chose a great place, Zugspitze! It's the highest peak in Germany and offers breathtaking views. As a tour guide company - We provide a guided tours for our costumers." ]
+      },
+      "watzmann": {
+        "responses": [ "Watzmann is a wonderful choice! It's the second highest mountain in Germany. As a tour guide company - We provide a guided tours for our costumers." ]
+      },
+      "tegelberg": {
+        "responses": [ "Tegelberg is an excellent choice! It offers a panoramic view of the Alps. As a tour guide company - We provide a guided tours for our costumers." ]
+      }
+    },
+    "forests": {
+      "responses": [ "That's a wonderful choice! In Bavaria, we have a few options: Spessart, Steigerwald, and Bayerischer Wald. Which do you prefer?" ],
+      "spessart": {
+        "responses": [ "You chose a great place, Spessart! It's one of the largest continuous forests in Germany. As a tour guide company - We provide a guided tours for our costumers." ]
+      },
+      "steigerwald": {
+        "responses": [ "Steigerwald is a wonderful choice! It's home to a wide variety of plant and animal species. As a tour guide company - We provide a guided tours for our costumers." ]
+      },
+      "bayerischer wald": {
+        "responses": [ "Bayerischer Wald is an excellent choice! It's a beautiful national park with fantastic trails. As a tour guide company - We provide a guided tours for our costumers." ]
+      }
+    }
+  },
+  "beach": {
+    "responses": [ "Bavaria is landlocked, but there are beautiful lakes with beach-like shores! Would you like to visit the beaches in North or South of Bavaria?" ],
+    "north": {
+      "responses": [ "Great choice! In Northern Bavaria, you can visit one of the following beautiful lakes: Altmühlsee, Brombachsee, or Rothsee. Which do you prefer?" ],
+      "altmühlsee": {
+        "responses": [ "Altmühlsee is a lovely spot! It's a large lake with plenty of recreational activities. Would you like to book a lounger or a guest house?" ]
+      },
+      "brombachsee": {
+        "responses": [ "Brombachsee is a fantastic choice! It's a popular tourist destination with a variety of water sports. Would you like to book a lounger or a guest house?" ]
+      },
+      "rothsee": {
+        "responses": [ "Rothsee is a great choice! It's part of the Franconian Lake District and it's perfect for a relaxing day out. Would you like to book a lounger or a guest house?" ]
+      }
+    },
+    "south": {
+      "responses": [ "Great choice! In Southern Bavaria, you can enjoy one of the following lakes: Lake Chiemsee, Lake Starnberg, or Lake Ammer. Which do you prefer?" ],
+      "chiemsee": {
+        "responses": [ "Chiemsee is a wonderful choice! Known as the Bavarian Sea, it's the largest lake in Bavaria. Would you like to book a lounger or a guest house?" ]
+      },
+      "starnberger see": {
+        "responses": [ "Starnberger See is an excellent choice! It's a popular spot for boating and swimming. Would you like to book a lounger or a guest house?" ]
+      },
+      "ammersee": {
+        "responses": [ "Ammersee is an amazing choice! It's a serene lake surrounded by beautiful landscapes. Would you like to book a lounger or a guest house?" ]
+      }
+    }
+  },
+    "attraction": {
+      "responses": [ "That's a fantastic choice! Bavaria is full of great attractions. Here are a few options: Neuschwanstein Castle, The Munich Residence, and The Romantic Road. Which do you prefer?" ],
+      "castle": {
+        "responses": [ "Neuschwanstein Castle is a wonderful choice! It's one of the most famous castles in the world. As a tour guide company - We provide a guided tours for our costumers." ]
+      },
+      "residence": {
+        "responses": [ "Munich Residence is an amazing choice! It's the former royal palace of the Bavarian monarchs. As a tour guide company - We provide a guided tours for our costumers." ]
+      },
+      "road": {
+        "responses": [ "Romantic Road is an excellent choice! It's one of the best and most popular scenic drives in Germany. As a tour guide company - We provide a guided tours for our costumers." ]
+      }
+    }
+  }
