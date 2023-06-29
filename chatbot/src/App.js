@@ -1,28 +1,35 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
-import IconPlus from './components/Plus'; // React component plus icon
-import IconSend from './components/Send'; // React component send icon
-import IconSearch from './components/Search'; // React component search icon
-import { checkWeather } from './jquery' // Importing function for implementing weather API
+import IconPlus from './components/Plus';
+import IconSend from './components/Send';
+import IconSearch from './components/Search';
+import { checkWeather } from './jquery';
 import ChatMessage from './components/ChatMessage';
 import backgroundImage from './image/image5.jpg';
+import { io } from 'socket.io-client';
 
+const socket = io('http://localhost:3001'); // server URL
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Using React hook for implementing menu popup state
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const textareaRef = useRef(null);
+  const [cityName, setCityName] = useState('');
+  const [favoritePlaces, setFavoritePlaces] = useState([]);
+  const [isPlusOpen, setIsPlusOpen] = useState(false);
+  const [input, setInput] = useState('');
+  const [chatLog, setChatLog] = useState([
+    { user: 'bot', message: 'How can I help?' },
+    { user: 'me', message: 'I want to use bot' },
+  ]);
 
-  // Variable for opening menu
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  
-  // Variable to handle the close of menu
+
   const handleCloseClick = () => {
     setIsMenuOpen(false);
   };
 
-  // Implementing scrollbar
   const handleTextareaChange = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -30,63 +37,69 @@ const App = () => {
     }
   };
 
-  // Defining cityName variable to store user's input
-  const [cityName, setCityName] = useState('');
-  
-  //
-  const [favoritePlaces, setFavoritePlaces] = useState([]);
-
-
-
   const handleSearchClick = async () => {
     try {
-      const temperature = await checkWeather(cityName); // Call the checkWeather function with the entered city name and get the temperature
-  
+      const temperature = await checkWeather(cityName);
       const newFavoritePlace = {
         city: cityName,
         temperature: temperature,
       };
-  
-      setFavoritePlaces([...favoritePlaces, newFavoritePlace]); // Add the newFavoritePlace to the favoritePlaces array
-  
-      setCityName(''); // Clear the cityName input field after adding the favorite place
-      setIsPlusOpen(false); // Close the plus popup window
+      setFavoritePlaces([...favoritePlaces, newFavoritePlace]);
+      setCityName('');
+      setIsPlusOpen(false);
     } catch (error) {
-      console.log(error); // Handle any errors that occur during the API request
+      console.log(error);
     }
   };
-  
 
-  // Adding the place, when plus is clicked
-  const [isPlusOpen, setIsPlusOpen] = useState(false);
   const handlePlusClick = () => {
     setIsPlusOpen(!isPlusOpen);
   };
 
-  // Variable to close popup menu 
   const handleClosePlusClick = () => {
     setIsPlusOpen(false);
   };
 
-  const [input, setInput] = useState('');
-  const [chatLog, setChatLog] = useState([{
-    user: "bot",
-    message: "How can I help?"
-  }, {
-    user: "me",
-    message: "I want to use bot"
-  }]);
- 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setChatLog([...chatLog, { user: "me", message: `${input}`}])
-    setInput('')
+  const handleSubmit = (e) => {
+  e.preventDefault();
+  const message = input.trim(); // Trim any leading/trailing whitespace
+  if (message) {
+    setChatLog([...chatLog, { user: 'me', message }]); // Update the chat log with the user's message
+    setInput('');
+
+    // Send the message to the server
+    socket.emit('message', message);
   }
-  
+
+  // Clear the input value
+  setInput('');
+
+  // Reset the placeholder text
+  if (textareaRef.current) {
+    textareaRef.current.style.height = 'auto';
+    textareaRef.current.value = '';
+    textareaRef.current.placeholder = 'Type your message here';
+  }
+};
+
+  useEffect(() => {
+    // Function to handle new messages from the server
+    const handleNewMessage = (data) => {
+      console.log('Received response:', data);
+      setChatLog((chatLog) => [...chatLog, { user: 'bot', message: data.message }]);
+    };
+
+    // Add the event listener when the component mounts
+    socket.on('response', handleNewMessage);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      socket.off('response', handleNewMessage);
+    };
+  }, []);  // Empty dependency array - this effect only runs on mount and unmount
+
   return (
-  
-    <div className={`App ${isMenuOpen ? 'active' : ''}`}
-      style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div className={`App ${isMenuOpen ? 'active' : ''}`} style={{ backgroundImage: `url(${backgroundImage})` }}>
       <header className="header">
         <div className="burger-menu" onClick={handleMenuClick}>
           &#9776;
@@ -97,8 +110,8 @@ const App = () => {
         </div>
       </header>
       <div className="chatbox-main">
-        <aside className='sidemenu'>
-          <div className='sidemenu-header-button' onClick={handlePlusClick}>
+        <aside className="sidemenu">
+          <div className="sidemenu-header-button" onClick={handlePlusClick}>
             <span>+</span>
             New place
           </div>
@@ -117,7 +130,7 @@ const App = () => {
         <div className="chatbox">
           <div className="chat-log">
             {chatLog.map((message, index) => (
-              <ChatMessage key={index} message = {message}/>
+              <ChatMessage key={index} message={message} />
             ))}
           </div>
           <div className="input-place-container">
@@ -127,12 +140,14 @@ const App = () => {
                 className="input-place"
                 placeholder="Type your message here"
                 rows="1"
-                onChange={handleTextareaChange}
-                style={{resize:"none"}}>
-                </textarea>
-              <div className='icon-send-container'>
-                <form onSubmit={handleSubmit} value={input} onChange={(e) => setInput(e.target.value)}>
-                  <IconSend width={30} height={30}/>
+                onChange={(e) => setInput(e.target.value)}
+                style={{ resize: 'none' }}
+              ></textarea>
+              <div className="icon-send-container">
+                <form onSubmit={handleSubmit}>
+                  <button type="submit">
+                    <IconSend width={30} height={30} />
+                  </button>
                 </form>
               </div>
             </div>
@@ -151,7 +166,6 @@ const App = () => {
                 </div>
               ))}
             </div>
-
             <button className="close-button" onClick={handleCloseClick}>
               X
             </button>
@@ -161,16 +175,17 @@ const App = () => {
       {isPlusOpen && (
         <div className="plus-popup">
           <div className="plus-popup-content">
-            <input className= "plus-popup-input" 
-              type="text" 
-              placeholder='Enter city name'
-              value={cityName} // Bind the input value to the cityName state
+            <input
+              className="plus-popup-input"
+              type="text"
+              placeholder="Enter city name"
+              value={cityName}
               onChange={(e) => setCityName(e.target.value)}
             />
-            <button className='plus-popup-button' onClick={handleSearchClick}>
+            <button className="plus-popup-button" onClick={handleSearchClick}>
               <IconSearch />
             </button>
-            <button className='plus-popup-close-button' onClick={handleClosePlusClick}>
+            <button className="plus-popup-close-button" onClick={handleClosePlusClick}>
               X
             </button>
           </div>
@@ -181,3 +196,5 @@ const App = () => {
 };
 
 export default App;
+
+

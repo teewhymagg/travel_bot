@@ -50,14 +50,32 @@
 .chatbox-main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   height: calc(100vh - 9vh);
   width: 100%;
   padding: 10px;
   background-color: lightgray;
   border-style: solid;
   border-width: 1px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  flex-grow: 1; /* Added flex-grow to allow the chatbox-main to grow within its container */
 }
+
+/* Adjusted scrollbar styles */
+.chatbox-main::-webkit-scrollbar {
+  width: 10px;
+  background: #f1f1f1;
+}
+
+.chatbox-main::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.chatbox-main::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 
 .burger-menu {
   display: inline-block;
@@ -277,12 +295,10 @@
   color: gray;
 }
 
-.chat-log {
-  text-align: left;
-}
 
 .chat-message {
   background-color: blue;
+  color: white; /* Added to ensure text is visible against the background */
 }
 
 .avatar {

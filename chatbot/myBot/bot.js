@@ -1,5 +1,6 @@
-﻿const readline = require('readline');
+﻿const readline = require('readline'); 
 const fs = require('fs');
+const socketIo = require('socket.io-client'); // use socket.io-client
 
 let currentContext = null;
 let chosenVacation = '';
@@ -8,14 +9,34 @@ let chosenDate = '';
 let chosenTime = '';
 let chosenActivity = '';
 let chosenQuantity = '';
-let userAppointments = [];;
+let userAppointments = [];
+
+const socket = socketIo('http://localhost:3001'); // Connect to the server
+
+socket.on('connect', () => {
+    console.log('Connected to the server');
+});
+
+socket.on('response', (data) => {
+    console.log('Response:', data);
+});
+
+socket.on('disconnect', () => {
+    console.log('Disconnected from the server');
+});
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
+rl.on('line', (input) => {
+    socket.emit('message', input);
+});
+
 const responses = JSON.parse(fs.readFileSync('responses.json', 'utf8'));
+
+
 
 function askQuestion(question) {
     return new Promise(resolve => {
@@ -24,6 +45,7 @@ function askQuestion(question) {
         });
     });
 }
+
 
 async function handleHelpCommand() {
     let helpInput = await askQuestion('Please choose an option (type the corresponding number):\n1. Guide service\n2. Office location\n3. Contacts\n4. Our rating\n5. Social networks\n6. Buy a Bayern ticket\nYour choice: ');
@@ -211,7 +233,7 @@ async function startConversation() {
     // Greeting message
     let response = await askQuestion("Hello, we are Turan company, which provides a guided tour for different places around Bavaria, Germany. Want to see our catalog? (yes/no) ");
 
-    if (response.toLowerCase() === "yes") {
+    if (response.toLowerCase() === "yes") {    
         await listVacationTypes();
     }
      else {
