@@ -7,6 +7,7 @@ import { checkWeather } from './jquery';
 import ChatMessage from './components/ChatMessage';
 import backgroundImage from './image/image5.jpg';
 import { io } from 'socket.io-client';
+import axios from 'axios';
 
 const socket = io('http://localhost:3001'); // server URL
 
@@ -60,43 +61,54 @@ const App = () => {
     setIsPlusOpen(false);
   };
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
-  const message = input.trim(); // Trim any leading/trailing whitespace
-  if (message) {
-    setChatLog([...chatLog, { user: 'me', message }]); // Update the chat log with the user's message
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const message = input.trim();
+  
+    if (message) {
+      setChatLog([...chatLog, { user: 'me', message }]);
+      setInput('');
+  
+      try {
+        // Make the API request to your backend server
+        const response = await axios.post('/api/chat', { message });
+  
+        // Handle the API response
+        const botResponse = response.data.botResponse;
+        setChatLog([...chatLog, { user: 'bot', message: botResponse }]);
+        console.log('Bot Response:', botResponse);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  
+    // Clear the input value
     setInput('');
-
-    // Send the message to the server
-    socket.emit('message', message);
-  }
-
-  // Clear the input value
-  setInput('');
-
-  // Reset the placeholder text
-  if (textareaRef.current) {
-    textareaRef.current.style.height = 'auto';
-    textareaRef.current.value = '';
-    textareaRef.current.placeholder = 'Type your message here';
-  }
-};
-
+  
+    // Reset the placeholder text
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.value = '';
+      textareaRef.current.placeholder = 'Type your message here';
+    }
+  };
+  
   useEffect(() => {
     // Function to handle new messages from the server
     const handleNewMessage = (data) => {
       console.log('Received response:', data);
       setChatLog((chatLog) => [...chatLog, { user: 'bot', message: data.message }]);
     };
-
+  
     // Add the event listener when the component mounts
     socket.on('response', handleNewMessage);
-
+  
     // Remove the event listener when the component unmounts
     return () => {
       socket.off('response', handleNewMessage);
     };
-  }, []);  // Empty dependency array - this effect only runs on mount and unmount
+  }, []); // Empty dependency array - this effect only runs on mount and unmount
+  
 
   return (
     <div className={`App ${isMenuOpen ? 'active' : ''}`} style={{ backgroundImage: `url(${backgroundImage})` }}>

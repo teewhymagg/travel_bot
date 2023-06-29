@@ -12,6 +12,7 @@
   width: 100%;
   height: 100%;
   font-family: sans-serif;
+  overflow: hidden;
 }
 
 .header {
@@ -57,25 +58,10 @@
   background-color: lightgray;
   border-style: solid;
   border-width: 1px;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   box-sizing: border-box;
   flex-grow: 1; /* Added flex-grow to allow the chatbox-main to grow within its container */
 }
-
-/* Adjusted scrollbar styles */
-.chatbox-main::-webkit-scrollbar {
-  width: 10px;
-  background: #f1f1f1;
-}
-
-.chatbox-main::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-.chatbox-main::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 
 .burger-menu {
   display: inline-block;
@@ -330,6 +316,10 @@
   background-color: red;
 }
 
+.chat-log {
+  max-height: calc(100vh - 200px); /* Adjust the value as needed to leave space for other elements */
+  overflow-y: auto;
+}
 
 @media (min-width: 820px) {
   .App {
@@ -464,9 +454,31 @@
     color: black;
   }
 
-  .chat-log {
-    text-align: left;
+  .chatbox {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    background-color: #FBEEC1;
   }
+  
+  .chat-log {
+    max-height: calc(100vh - 200px); /* Adjust the value as needed to leave space for other elements */
+    overflow-y: auto;
+  }
+  
+  
+  .chat-log-content {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .input-place-container {
+    flex-shrink: 0;
+    padding: 10px;
+    background-color: #FBEEC1;
+  }
+  
   
   .chat-message {
     background-color: #659DBD;
