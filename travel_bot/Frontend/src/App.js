@@ -90,7 +90,6 @@ const App = () => {
     setInput('');
   
     try {
-
       console.log('Sending message to server:', input);
       const response = await sendMessageToServer('http://localhost:3001/api/sendMessage', {
         message: input,
@@ -102,7 +101,7 @@ const App = () => {
   
       const botResponse = response.message;
   
-      // Use the previous chatLog state instead of the current state
+      // Update the chatLog state with the bot's response
       setChatLog((prevChatLog) => [...prevChatLog, { user: 'bot', message: botResponse }]);
     } catch (error) {
       console.log(error);
@@ -142,10 +141,9 @@ const App = () => {
         <div className="chatbox">
         <div className="chat-log">
         {chatLog.map((message, index) => (
-  <ChatMessage key={index} message={message.message} /> // Extract 'message' property from 'message' object
-))}
-
-        </div>
+          <ChatMessage key={index} message={message} />
+        ))}
+      </div>
           <div className="input-place-container">
             <div className="input-place-main">
               <textarea
