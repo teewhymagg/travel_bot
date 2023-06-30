@@ -6,10 +6,6 @@ import IconSearch from './components/Search';
 import { checkWeather } from './jquery';
 import ChatMessage from './components/ChatMessage';
 import backgroundImage from './image/image5.jpg';
-import { io } from 'socket.io-client';
-import axios from 'axios';
-
-const socket = io('http://localhost:3001'); // server URL
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,19 +19,19 @@ const App = () => {
     { user: 'me', message: 'I want to use bot' },
   ]);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [input]);
+
   const handleMenuClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const handleCloseClick = () => {
     setIsMenuOpen(false);
-  };
-
-  const handleTextareaChange = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
   };
 
   const handleSearchClick = async () => {
@@ -61,53 +57,57 @@ const App = () => {
     setIsPlusOpen(false);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const message = input.trim();
+
+  const sendMessageToServer = async (endpoint, data) => {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
   
-    if (message) {
-      setChatLog([...chatLog, { user: 'me', message }]);
-      setInput('');
-  
-      try {
-        // Make the API request to your backend server
-        const response = await axios.post('/api/chat', { message });
-  
-        // Handle the API response
-        const botResponse = response.data.botResponse;
-        setChatLog([...chatLog, { user: 'bot', message: botResponse }]);
-        console.log('Bot Response:', botResponse);
-      } catch (error) {
-        console.error('Error:', error);
+      if (!response.ok) {
+        throw new Error('Failed to send message');
       }
-    }
   
-    // Clear the input value
-    setInput('');
-  
-    // Reset the placeholder text
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.value = '';
-      textareaRef.current.placeholder = 'Type your message here';
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.log(error);
+      return null;
     }
   };
+
+  const handleSendMessage = async () => {
+    if (input.trim() === '') return;
   
-  useEffect(() => {
-    // Function to handle new messages from the server
-    const handleNewMessage = (data) => {
-      console.log('Received response:', data);
-      setChatLog((chatLog) => [...chatLog, { user: 'bot', message: data.message }]);
-    };
+    const newMessage = { user: 'me', message: input };
   
-    // Add the event listener when the component mounts
-    socket.on('response', handleNewMessage);
+    // Update the chatLog state with the new user message
+    setChatLog((prevChatLog) => [...prevChatLog, newMessage]);
+    setInput('');
   
-    // Remove the event listener when the component unmounts
-    return () => {
-      socket.off('response', handleNewMessage);
-    };
-  }, []); // Empty dependency array - this effect only runs on mount and unmount
+    try {
+
+      console.log('Sending message to server:', input);
+      const response = await sendMessageToServer('http://localhost:3001/api/sendMessage', {
+        message: input,
+      });
+  
+      if (!response) {
+        throw new Error('Failed to send message');
+      }
+  
+      const botResponse = response.message;
+  
+      // Use the previous chatLog state instead of the current state
+      setChatLog((prevChatLog) => [...prevChatLog, { user: 'bot', message: botResponse }]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
 
   return (
@@ -129,11 +129,11 @@ const App = () => {
           </div>
           <div className="sidemenu-content">
             <h2>Favourite places</h2>
-            <div className="favourite-place1">
+            <div className="favorite-places">
               {favoritePlaces.map((place, index) => (
-                <div key={index} className="favorite-place1">
-                  <span className="city-name1">{place.city}</span>
-                  <span className="temperature1">{place.temperature}&deg;C</span>
+                <div key={index} className="favorite-place">
+                  <span className="city-name">{place.city}</span>
+                  <span className="temperature">{place.temperature}&deg;C</span>
                 </div>
               ))}
             </div>
@@ -141,9 +141,10 @@ const App = () => {
         </aside>
         <div className="chatbox">
         <div className="chat-log">
-          {chatLog.map((message, index) => (
-            <ChatMessage key={index} message={message} isBot={message.user === 'bot'} />
-          ))}
+        {chatLog.map((message, index) => (
+  <ChatMessage key={index} message={message.message} /> // Extract 'message' property from 'message' object
+))}
+
         </div>
           <div className="input-place-container">
             <div className="input-place-main">
@@ -152,15 +153,14 @@ const App = () => {
                 className="input-place"
                 placeholder="Type your message here"
                 rows="1"
+                value={input}
                 onChange={(e) => setInput(e.target.value)}
                 style={{ resize: 'none' }}
               ></textarea>
               <div className="icon-send-container">
-                <form onSubmit={handleSubmit}>
-                  <button type="submit">
-                    <IconSend width={30} height={30} />
-                  </button>
-                </form>
+                <button type="submit" onClick={handleSendMessage}>
+                  <IconSend width={30} height={30} />
+                </button>
               </div>
             </div>
           </div>
@@ -208,5 +208,3 @@ const App = () => {
 };
 
 export default App;
-
-

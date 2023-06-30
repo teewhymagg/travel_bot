@@ -1,7 +1,9 @@
-﻿const readline = require('readline'); 
+﻿// Require necessary libraries
+const readline = require('readline'); 
 const fs = require('fs');
-const socketIo = require('socket.io-client'); // use socket.io-client
+const socketIo = require('socket.io-client'); 
 
+// Declare variables to keep track of the user's current context and inputs
 let currentContext = null;
 let chosenVacation = '';
 let chosenLocation = '';
@@ -11,33 +13,40 @@ let chosenActivity = '';
 let chosenQuantity = '';
 let userAppointments = [];
 
-const socket = socketIo('http://localhost:3001'); // Connect to the server
+// Initialize the socket connection to the server
+const socket = socketIo('http://localhost:3001'); 
 
+// Log when connected to the server
 socket.on('connect', () => {
     console.log('Connected to the server');
 });
 
+// Log the data received in the server's response
 socket.on('response', (data) => {
     console.log('Response:', data);
 });
 
+// Log when disconnected from the server
 socket.on('disconnect', () => {
     console.log('Disconnected from the server');
 });
 
+// Initialize readline interface for reading user input from the command line
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
+// Send any user input to the server
 rl.on('line', (input) => {
     socket.emit('message', input);
 });
 
+// Load the bot's potential responses from a JSON file
 const responses = JSON.parse(fs.readFileSync('responses.json', 'utf8'));
 
 
-
+// Function for asking a user a question and waiting for their response
 function askQuestion(question) {
     return new Promise(resolve => {
         rl.question(question, answer => {
@@ -46,7 +55,7 @@ function askQuestion(question) {
     });
 }
 
-
+// Function for handling the "/help" command
 async function handleHelpCommand() {
     let helpInput = await askQuestion('Please choose an option (type the corresponding number):\n1. Guide service\n2. Office location\n3. Contacts\n4. Our rating\n5. Social networks\n6. Buy a Bayern ticket\nYour choice: ');
 
@@ -82,7 +91,7 @@ async function handleHelpCommand() {
     }
 }
 
-
+// Function for booking an activity: 1.hiking 2.beach 3. attraction
 async function bookActivity(type, cost, location) {
     // Additional control for the quantity.
     let quantity = '';
@@ -90,7 +99,7 @@ async function bookActivity(type, cost, location) {
         quantity = await askQuestion(`How many ${type}s would you like to book? `);
         if (quantity.trim() === "/help") {
             await handleHelpCommand();
-            return await bookActivity(type, cost, location); // Use recursion to repeat the process.
+            return await bookActivity(type, cost, location); 
         }
     } while (isNaN(quantity) || quantity <= 0);
 
@@ -98,7 +107,6 @@ async function bookActivity(type, cost, location) {
     let confirmation = await askQuestion(`The total cost for ${quantity} ${type}(s) at ${location} would be $${totalCost}. Would you like to proceed? (yes/no) `);
 
     if (confirmation.toLowerCase() === "yes") {
-        // Check the validity of the date.
         let userDate = '';
         do {
             userDate = await askQuestion("\nOn which date would you like to book? Please provide a date (in format YYYY-MM-DD): ");
@@ -128,7 +136,7 @@ async function bookActivity(type, cost, location) {
     }
 }
 
-
+// Function for getting the bot's response based on user input
 async function getBotResponse(userInput) {
     userInput = userInput.toLowerCase();
 
@@ -151,7 +159,6 @@ async function getBotResponse(userInput) {
                 }
             }
         }
-        // if chosenLocation is not found in currentContext
         currentContext = responses; // Reset currentContext back to responses
     }
 
@@ -176,12 +183,12 @@ async function getBotResponse(userInput) {
 
     return null; // Return null when bot doesn't understand the user's input
 }
+module.exports = { getBotResponse };
 
 
-
-
-
-
+/* setAppointment() function first asks the user to provide a date for their tour. 
+It then checks if the provided date is valid. 
+If the date is valid, the function proceeds to ask for the time. */ 
 async function setAppointment() {
     chosenDate = await askQuestion("\nWhen would you like to have your tour? Please provide a date (in format YYYY-MM-DD): ");
 
@@ -200,7 +207,9 @@ async function setAppointment() {
     }
 }
 
-// This function lists all the vacation types and asks the user about their preferences
+/* This function lists all the different types of vacations that are available and asks the user about their preference. 
+The user's preference is then passed to the getBotResponse() function
+to get an appropriate response or question from the bot. */
 async function listVacationTypes() {
     chosenVacation = '';
     chosenLocation = '';
@@ -208,7 +217,8 @@ async function listVacationTypes() {
     let idea1 = "Hiking";
     let idea2 = "Beach Vacation";
     let idea3 = "Exploring the attractions of Bavaria";
-    console.log(`${greeting}\n${idea1}\n${idea2}\n${idea3}`);
+    let idea4 = "[type hiking/ beach/ attraction]"
+    console.log(`${greeting}\n${idea1}\n${idea2}\n${idea3}\n${idea4}`);
 
     let preferenceQuestion = "\nWhich of these types of vacations are you interested in, or is there another type you prefer?";
     let userPreference = await askQuestion(preferenceQuestion);
@@ -224,7 +234,14 @@ async function listVacationTypes() {
 }
 
 
-
+/* This is the main function that initiates the conversation with the user. 
+It greets the user and asks them if they want to see the vacation catalog. 
+If the user agrees, the listVacationTypes() function is called. 
+The conversation continues with the bot asking questions and responding to user inputs. 
+If the user enters "/help", a menu of help options is displayed. 
+The user can then select an option to get more information. 
+The conversation continues until the user says "bye".
+When the conversation ends, a summary of the user's appointments is displayed. */
 async function startConversation() {
     chosenVacation = '';
     chosenLocation = '';
@@ -385,7 +402,22 @@ async function startConversation() {
         // If botResponse includes "book a lounger" or "guest house", then initiate the booking process
         if (botResponse && (botResponse.includes("book a lounger") || botResponse.includes("guest house"))) {
             location = userInput;
-            awaitingLoungerSeatingResponse = true; // set the state variable
+            awaitingLoungerSeatingResponse = true; 
+        }
+
+        if (botResponse && botResponse.includes("appointments")) {  
+            let continueExploring = await askQuestion('Do you want to continue with exploring new places? (yes/no) ');
+            if (continueExploring.toLowerCase() === 'yes') {
+                userPreference = await listVacationTypes();
+                question = await getBotResponse(userPreference);
+                console.log(`Bot: ${question}`);
+            } else {
+                console.log("\nIf you would like to monitor the weather in the area where you are planning to go, you can do this in our website!\nHere is a summary of your appointments:");
+                for (let appointment of userAppointments) {
+                    console.log(appointment);
+                }
+                break;
+            }
         }
     }
 
@@ -393,4 +425,3 @@ async function startConversation() {
 }
 
 startConversation();
-

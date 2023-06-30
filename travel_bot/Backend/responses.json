@@ -31,25 +31,25 @@
     "north": {
       "responses": [ "Great choice! In Northern Bavaria, you can visit one of the following beautiful lakes: Altm端hlsee, Brombachsee, or Rothsee. Which do you prefer?[type altm端hlsee/ brombachsee/ rothsee]" ],
       "altm端hlsee": {
-        "responses": [ "Altm端hlsee is a lovely spot! It's a large lake with plenty of recreational activities. Would you like to book a lounger or a guest house?" ]
+        "responses": [ "Altm端hlsee is a lovely spot! It's a large lake with plenty of recreational activities. Would you like to book a lounger or a guest house?[type lounger/ guest house]" ]
       },
       "brombachsee": {
-        "responses": [ "Brombachsee is a fantastic choice! It's a popular tourist destination with a variety of water sports. Would you like to book a lounger or a guest house?" ]
+        "responses": [ "Brombachsee is a fantastic choice! It's a popular tourist destination with a variety of water sports. Would you like to book a lounger or a guest house?[type lounger/ guest house]" ]
       },
       "rothsee": {
-        "responses": [ "Rothsee is a great choice! It's part of the Franconian Lake District and it's perfect for a relaxing day out. Would you like to book a lounger or a guest house?" ]
+        "responses": [ "Rothsee is a great choice! It's part of the Franconian Lake District and it's perfect for a relaxing day out. Would you like to book a lounger or a guest house?[type lounger/ guest house]" ]
       }
     },
     "south": {
       "responses": [ "Great choice! In Southern Bavaria, you can enjoy one of the following lakes: Lake Chiemsee, Lake Starnberg, or Lake Ammer. Which do you prefer?[type chiemsee/ starnberger see/ ammersee]" ],
       "chiemsee": {
-        "responses": [ "Chiemsee is a wonderful choice! Known as the Bavarian Sea, it's the largest lake in Bavaria. Would you like to book a lounger or a guest house?" ]
+        "responses": [ "Chiemsee is a wonderful choice! Known as the Bavarian Sea, it's the largest lake in Bavaria. Would you like to book a lounger or a guest house?[type lounger/ guest house]" ]
       },
       "starnberger see": {
-        "responses": [ "Starnberger See is an excellent choice! It's a popular spot for boating and swimming. Would you like to book a lounger or a guest house?" ]
+        "responses": [ "Starnberger See is an excellent choice! It's a popular spot for boating and swimming. Would you like to book a lounger or a guest house?[type lounger/ guest house]" ]
       },
       "ammersee": {
-        "responses": [ "Ammersee is an amazing choice! It's a serene lake surrounded by beautiful landscapes. Would you like to book a lounger or a guest house?" ]
+        "responses": [ "Ammersee is an amazing choice! It's a serene lake surrounded by beautiful landscapes. Would you like to book a lounger or a guest house?[type lounger/ guest house]" ]
       }
     }
   },

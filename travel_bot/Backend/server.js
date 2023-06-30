@@ -1,33 +1,33 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+// Import the getBotResponse function from bot.js
+const { getBotResponse } = require('./bot');
+
 const app = express();
-const http = require('http').createServer(app);
-const socketIO = require('socket.io');
-const io = socketIO(http);
-var cors = require('cors')
- 
-app.use(cors({ origin: 'http://localhost:3000' }));
+const PORT = 3001;
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
+app.use(bodyParser.json());
+app.use(cors());
 
-  socket.on('message', (message) => {
-    console.log('Received message:', message);
+app.post('/api/sendMessage', (req, res) => {
+  console.log("Received request:", req.body);
+  const userInput = req.body.message;
 
-    const response = `You sent: ${message}`;
+  // Call the generateBotResponse function to get the bot's response
+  const botResponse = getBotResponse(userInput);
 
-    io.emit('response', { user: 'bot', message: response });
+  // Create a response object with the bot's message
+  const response = {
+    message: botResponse
+  };
 
-    console.log('Emitted response:', response);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
-  });
+  // Send the response back to the client
+  res.json(response);
+  console.log('Bot response:', botResponse);
 });
 
-
-
-const port = 3001;
-http.listen(port, () => {
-  console.log(`Server is listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

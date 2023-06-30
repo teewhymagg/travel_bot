@@ -344,15 +344,6 @@
   border-bottom: 1px solid #000; /* Add a thin solid border to the bottom */
 }
 
-
-.avatar.user-message {
-  background-color: green;
-}
-
-.avatar.bot-message {
-
-}
-
 .icon-send-container button {
   background: none;
   border: none;
