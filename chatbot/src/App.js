@@ -140,11 +140,11 @@ const App = () => {
           </div>
         </aside>
         <div className="chatbox">
-          <div className="chat-log">
-            {chatLog.map((message, index) => (
-              <ChatMessage key={index} message={message} />
-            ))}
-          </div>
+        <div className="chat-log">
+          {chatLog.map((message, index) => (
+            <ChatMessage key={index} message={message} isBot={message.user === 'bot'} />
+          ))}
+        </div>
           <div className="input-place-container">
             <div className="input-place-main">
               <textarea
