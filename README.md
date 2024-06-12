@@ -2,6 +2,9 @@
 
 Welcome to the Bayern Travel Guide Agent, a web application that suggests the best places to visit in Bayern, Germany. This application is built with React for the frontend and Node.js for the backend. It aims to provide users with a personalized travel experience by recommending top destinations in the beautiful region of Bayern.
 
+Collaborator:
+kazanova777 https://github.com/kazanova777
+
 ![Bayern Travel Guide](travel_bot.png)
 
 ## Table of Contents
